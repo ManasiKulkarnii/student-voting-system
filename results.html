@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/style.css' %}" />
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      <style > body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .callout {
+        position: fixed;
+        bottom: 5px;
+        right: 8px;
+        margin-left: 20px;
+        max-width: 320px;
+      }
+      .callout-header {
+        padding: 10px 15px;
+        background: #555;
+        font-size: 17px;
+        color: white;
+      }
+      .callout-container {
+        padding: 15px;
+        background-color: #41bfc1;
+        color: white;
+      }
+      .closebtn {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+      }
+      .closebtn:hover {
+        color: lightgrey;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+      <a class="navbar-brand" href="/">
+        <img src="{% static 'polls/images/uop_logo.png' %}" alt="Logo" style="width: 40px;" />
+        Student - Project Voting System
+      </a>
+    </nav>
+    {% if error_message %}
+    <p class="heading-section"></p>
+    <strong>{{ error_message }}</strong>
+    {% endif %}
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">{{ question.question_text }}</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-wrap">
+              <form action="{% url 'polls:vote' question.id %}" method="post">
+                <table class="table table-responsive-xl">
+                  <thead>
+                    <tr>
+                      <th>Choice</th>
+                      <th>Votes so far</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for choice in question.choice_set.all %} {% csrf_token %}
+                    <tr class="alert" role="alert">
+                      <td>{{ choice.choice_text }}</td>
+                      <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <button onclick="myFunction()"><a href="/{{question.id}}">Vote again?</a></button>
+                <button><a href="/">Home</a></button>
+                <script>
+                  function myFunction() {
+                    alert("Do you want to vote again?");
+                  }
+                </script>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/jquery.min.js" type="javascript"></script>
+    <script src="js/popper.js" type="javascript"></script>
+    <script src="js/bootstrap.min.js" type="javascript"></script>
+    <script src="js/main.js" type="javascript"></script>
+
+    <div class="callout">
+      <div class="callout-header">Welcome to project voting system</div>
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">×</span>
+      <div class="callout-container">
+        <p>You have successfully chosen topic of your choice, well done!</p>
+        <p>You can vote again for the second topic of your choice, please click on vote again button!</p>
+        <p>OR press on the home button to return!</p>
+      </div>
+    </div>
+  </body>
+</html>
